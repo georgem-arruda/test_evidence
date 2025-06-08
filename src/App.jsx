@@ -9,7 +9,8 @@ import {
   ThemeProvider,
   createTheme,
   CssBaseline,
-  Button
+  Button,
+  TextField
 } from '@mui/material'
 import DownloadIcon from '@mui/icons-material/Download'
 import GeneralInfo from './components/GeneralInfo'
@@ -76,6 +77,41 @@ function TabPanel(props) {
   );
 }
 
+function SummaryTab({ testCases, summaryNotes, setSummaryNotes }) {
+  const total = testCases.length;
+  const approved = testCases.filter(tc => tc.status === 'Aprovado').length;
+  const rejected = testCases.filter(tc => tc.status === 'Reprovado').length;
+  const coverage = total > 0 ? ((approved / total) * 100).toFixed(1) : '0.0';
+
+  return (
+    <Box sx={{ p: 3 }}>
+      <Typography variant="h5" gutterBottom>Resumo Geral</Typography>
+      <Typography variant="body1" sx={{ mb: 2 }}>
+        <strong>Total de Casos de Teste Executados:</strong> {total}
+      </Typography>
+      <Typography variant="body1" sx={{ mb: 2 }}>
+        <strong>Casos Aprovados:</strong> {approved}
+      </Typography>
+      <Typography variant="body1" sx={{ mb: 2 }}>
+        <strong>Casos Reprovados:</strong> {rejected}
+      </Typography>
+      <Typography variant="body1" sx={{ mb: 4 }}>
+        <strong>Cobertura dos Testes:</strong> {coverage}%
+      </Typography>
+      <Typography variant="h6" gutterBottom>Observações Finais e Recomendações</Typography>
+      <TextField
+        fullWidth
+        multiline
+        minRows={3}
+        value={summaryNotes}
+        onChange={e => setSummaryNotes(e.target.value)}
+        placeholder="Digite suas observações finais e recomendações aqui..."
+        sx={{ backgroundColor: '#ffffff' }}
+      />
+    </Box>
+  );
+}
+
 function App() {
   const [tabValue, setTabValue] = useState(0);
   const [generalInfo, setGeneralInfo] = useState({
@@ -95,6 +131,7 @@ function App() {
       evidence: null
     }
   ]);
+  const [summaryNotes, setSummaryNotes] = useState('');
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -112,7 +149,13 @@ function App() {
 
   const handleGeneratePDF = async () => {
     if (!isFormValid()) return;
-    await generatePDF(generalInfo, testCases);
+    await generatePDF(generalInfo, testCases, {
+      total: testCases.length,
+      approved: testCases.filter(tc => tc.status === 'Aprovado').length,
+      rejected: testCases.filter(tc => tc.status === 'Reprovado').length,
+      coverage: testCases.length > 0 ? ((testCases.filter(tc => tc.status === 'Aprovado').length / testCases.length) * 100).toFixed(1) : '0.0',
+      summaryNotes
+    });
   };
 
   return (
@@ -153,9 +196,9 @@ function App() {
                   variant="fullWidth"
                   sx={{ minHeight: 64 }}
                 >
-                  <Tab label="Resumo" sx={{ minHeight: 64, fontSize: 18 }} />
                   <Tab label="Informações e Escopo" sx={{ minHeight: 64, fontSize: 18 }} />
                   <Tab label="Testes" sx={{ minHeight: 64, fontSize: 18 }} />
+                  <Tab label="Resumo" sx={{ minHeight: 64, fontSize: 18 }} />
                 </Tabs>
               </Box>
 
@@ -172,6 +215,9 @@ function App() {
                     setTestCases={setTestCases}
                   />
                 </Box>
+              </TabPanel>
+              <TabPanel value={tabValue} index={2}>
+                <SummaryTab testCases={testCases} summaryNotes={summaryNotes} setSummaryNotes={setSummaryNotes} />
               </TabPanel>
             </Paper>
           </Box>
