@@ -25,7 +25,7 @@ import {
           expectedResult: '',
           actualResult: '',
           status: 'Selecione o status',
-          evidence: null
+          evidences: []
         }
       ])
     }
@@ -43,10 +43,24 @@ import {
     }
   
     const handleEvidenceUpload = (id, event) => {
-      const file = event.target.files[0]
-      if (file) {
-        handleTestCaseChange(id, 'evidence', file)
-      }
+      const files = Array.from(event.target.files)
+      setTestCases(prev =>
+        prev.map(testCase =>
+          testCase.id === id
+            ? { ...testCase, evidences: [...(testCase.evidences || []), ...files] }
+            : testCase
+        )
+      )
+    }
+  
+    const handleRemoveEvidence = (id, index) => {
+      setTestCases(prev =>
+        prev.map(testCase =>
+          testCase.id === id
+            ? { ...testCase, evidences: testCase.evidences.filter((_, i) => i !== index) }
+            : testCase
+        )
+      )
     }
   
     return (
@@ -88,7 +102,7 @@ import {
               sx={{ mb: 3, p: 3, backgroundColor: '#fafafa', borderRadius: 2 }}
             >
               <Typography variant="h6" sx={{ mb: 2 }}>
-                Caso de Teste #{testCase.id}
+                Caso de Teste {testCase.id}
               </Typography>
   
               <Grid container spacing={2}>
@@ -161,22 +175,35 @@ import {
                     fullWidth
                     sx={{ height: '56px' }}
                   >
-                    {testCase.evidence ? 'Alterar Evidência' : 'Adicionar Evidência'}
+                    Adicionar Evidência
                     <input
                       type="file"
                       hidden
                       accept="image/*"
+                      multiple
                       onChange={(e) => handleEvidenceUpload(testCase.id, e)}
                     />
                   </Button>
   
-                  {testCase.evidence && (
-                    <Box sx={{ mt: 2 }}>
-                      <img
-                        src={URL.createObjectURL(testCase.evidence)}
-                        alt={`Evidência do caso de teste ${testCase.id}`}
-                        style={{ maxWidth: '100%', maxHeight: '200px' }}
-                      />
+                  {testCase.evidences && testCase.evidences.length > 0 && (
+                    <Box sx={{ mt: 2, display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+                      {testCase.evidences.map((file, idx) => (
+                        <Box key={idx} sx={{ position: 'relative', mr: 2 }}>
+                          <img
+                            src={URL.createObjectURL(file)}
+                            alt={`Evidência ${idx + 1} do caso de teste ${testCase.id}`}
+                            style={{ maxWidth: '120px', maxHeight: '120px', borderRadius: 4, border: '1px solid #ccc' }}
+                          />
+                          <IconButton
+                            size="small"
+                            color="error"
+                            onClick={() => handleRemoveEvidence(testCase.id, idx)}
+                            sx={{ position: 'absolute', top: 0, right: 0 }}
+                          >
+                            <DeleteIcon fontSize="small" />
+                          </IconButton>
+                        </Box>
+                      ))}
                     </Box>
                   )}
                 </Grid>

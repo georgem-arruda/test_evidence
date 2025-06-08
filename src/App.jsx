@@ -128,7 +128,7 @@ function App() {
       expectedResult: '',
       actualResult: '',
       status: 'Selecione o status',
-      evidence: null
+      evidences: []
     }
   ]);
   const [summaryNotes, setSummaryNotes] = useState('');
@@ -166,9 +166,10 @@ function App() {
           <Box sx={{ my: 4 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
               <Typography variant="h3" component="h1">
-                Test Evidence Management System
+                Relatório de Evidências de Testes de Software
               </Typography>
-              <Button
+            </Box>
+            <Button
                 variant="contained"
                 color="primary"
                 startIcon={<DownloadIcon />}
@@ -177,8 +178,6 @@ function App() {
               >
                 Baixar Relatório
               </Button>
-            </Box>
-
             <Paper elevation={3} sx={{
               mt: 4,
               backgroundColor: '#ffffff',
