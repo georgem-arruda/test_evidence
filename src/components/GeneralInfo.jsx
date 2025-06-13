@@ -30,35 +30,34 @@ function GeneralInfo({ generalInfo, setGeneralInfo }) {
   return (
     <Box sx={{ height: '100%' }}>
       <Box component="form" onSubmit={handleSubmit}>
-        <Typography variant="h6" gutterBottom>
+        <Typography variant="h4" gutterBottom sx={{ fontWeight: 700 }}>
           Informações Gerais
         </Typography>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
             <TextField
               fullWidth
-              label="Produto"
+              label="Projeto/Produto"
               name="product"
               value={generalInfo.product}
               onChange={handleChange}
-              sx={{ backgroundColor: '#ffffff', minWidth: 600 }}
+              sx={{ backgroundColor: '#ffffff' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField
               fullWidth
-              label="Versão"
+              label="Versão Testada"
               name="version"
               value={generalInfo.version}
               onChange={handleChange}
-              required
-              sx={{ backgroundColor: '#ffffff', minWidth: 600 }}
+              sx={{ backgroundColor: '#ffffff' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ptBR}>
               <DatePicker
-                label="Data"
+                label="Data de Execução"
                 value={generalInfo.date || null}
                 onChange={(newValue) => {
                   setGeneralInfo(prev => ({
@@ -70,9 +69,15 @@ function GeneralInfo({ generalInfo, setGeneralInfo }) {
                 slotProps={{
                   textField: {
                     fullWidth: true,
-                    required: true,
                     sx: { backgroundColor: '#ffffff' },
-                    placeholder: 'DD/MM/AAAA'
+                    placeholder: 'DD/MM/AAAA',
+                    InputProps: {
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <CalendarTodayIcon />
+                        </InputAdornment>
+                      )
+                    }
                   }
                 }}
               />
@@ -85,8 +90,57 @@ function GeneralInfo({ generalInfo, setGeneralInfo }) {
               name="responsible"
               value={generalInfo.responsible}
               onChange={handleChange}
-              required
-              sx={{ backgroundColor: '#ffffff', minWidth: 500 }}
+              sx={{ backgroundColor: '#ffffff' }}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              fullWidth
+              label="Tipo de Teste"
+              name="testType"
+              value={generalInfo.testType || ''}
+              onChange={handleChange}
+              sx={{ backgroundColor: '#ffffff' }}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              fullWidth
+              label="Ambiente de Teste"
+              name="testEnvironment"
+              value={generalInfo.testEnvironment || ''}
+              onChange={handleChange}
+              sx={{ backgroundColor: '#ffffff' }}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              fullWidth
+              label="Sistema Operacional"
+              name="os"
+              value={generalInfo.os || ''}
+              onChange={handleChange}
+              sx={{ backgroundColor: '#ffffff' }}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              fullWidth
+              label="Navegador/Versão"
+              name="browser"
+              value={generalInfo.browser || ''}
+              onChange={handleChange}
+              sx={{ backgroundColor: '#ffffff' }}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              fullWidth
+              label="Banco de Dados"
+              name="database"
+              value={generalInfo.database || ''}
+              onChange={handleChange}
+              sx={{ backgroundColor: '#ffffff' }}
             />
           </Grid>
         </Grid>
@@ -103,7 +157,7 @@ function GeneralInfo({ generalInfo, setGeneralInfo }) {
               label="Objetivo do Teste"
               name="objective"
               multiline
-              rows={4}
+              rows={15}
               value={generalInfo.objective}
               onChange={handleChange}
               required

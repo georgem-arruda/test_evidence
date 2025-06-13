@@ -81,34 +81,52 @@ function SummaryTab({ testCases, summaryNotes, setSummaryNotes }) {
   const total = testCases.length;
   const approved = testCases.filter(tc => tc.status === 'Aprovado').length;
   const rejected = testCases.filter(tc => tc.status === 'Reprovado').length;
-  const coverage = total > 0 ? ((approved / total) * 100).toFixed(1) : '0.0';
+  const pending = testCases.filter(tc => tc.status === 'Selecione o status').length;
+  const coverage = total > 0 ? ((approved / total) * 100).toFixed(2) : '0.00';
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Typography variant="h5" gutterBottom>Resumo Geral</Typography>
-      <Typography variant="body1" sx={{ mb: 2 }}>
-        <strong>Total de Casos de Teste Executados:</strong> {total}
+    <Box sx={{ background: '#fff', borderRadius: 3, mb: 4 }}>
+      <Typography variant="h4" gutterBottom sx={{ fontWeight: 700 }}>
+        Resumo Geral
       </Typography>
-      <Typography variant="body1" sx={{ mb: 2 }}>
-        <strong>Casos Aprovados:</strong> {approved}
-      </Typography>
-      <Typography variant="body1" sx={{ mb: 2 }}>
-        <strong>Casos Reprovados:</strong> {rejected}
-      </Typography>
-      <Typography variant="body1" sx={{ mb: 4 }}>
-        <strong>Cobertura dos Testes:</strong> {coverage}%
-      </Typography>
-      <Typography variant="h6" gutterBottom>Observações Finais e Recomendações</Typography>
-      <TextField
-        fullWidth
-        multiline
-        minRows={3}
-        value={summaryNotes}
-        onChange={e => setSummaryNotes(e.target.value)}
-        placeholder="Digite suas observações finais e recomendações aqui..."
-        sx={{ backgroundColor: '#ffffff' }}
-      />
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ background: '#f7f9fb', borderRadius: 2, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant="subtitle1">Total de Casos de Teste:</Typography>
+          <Typography variant="subtitle1">{total}</Typography>
+        </Box>
+        <Box sx={{ background: '#f7f9fb', borderRadius: 2, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant="subtitle1">Casos Aprovados:</Typography>
+          <Typography variant="subtitle1" sx={{ color: '#43a047' }}>{approved}</Typography>
+        </Box>
+        <Box sx={{ background: '#f7f9fb', borderRadius: 2, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant="subtitle1">Casos Reprovados:</Typography>
+          <Typography variant="subtitle1" sx={{ color: '#e53935' }}>{rejected}</Typography>
+        </Box>
+        <Box sx={{ background: '#f7f9fb', borderRadius: 2, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant="subtitle1">Casos Pendentes:</Typography>
+          <Typography variant="subtitle1" sx={{ color: '#fbc02d' }}>{pending}</Typography>
+        </Box>
+        <Box sx={{ background: '#f7f9fb', borderRadius: 2, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant="subtitle1">Cobertura dos Testes:</Typography>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{coverage}%</Typography>
+        </Box>
+      </Box>
+      <Box sx={{ background: '#fff', borderRadius: 3, p: 3 }}>
+                  <Typography variant="h4" gutterBottom sx={{ fontWeight: 700 }}>
+                    Observações Finais e Recomendações
+                  </Typography>
+                  <TextField
+                    fullWidth
+                    multiline
+                    minRows={6}
+                    value={summaryNotes}
+                    onChange={e => setSummaryNotes(e.target.value)}
+                    placeholder="Insira observações e recomendações"
+                    sx={{ backgroundColor: '#f7f9fb' }}
+                  />
+                </Box>
     </Box>
+    
   );
 }
 
@@ -117,8 +135,13 @@ function App() {
   const [generalInfo, setGeneralInfo] = useState({
     product: '',
     version: '',
-    date: '',
+    date: new Date(),
     responsible: '',
+    testType: '',
+    testEnvironment: '',
+    os: '',
+    browser: '',
+    database: '',
     objective: ''
   });
   const [testCases, setTestCases] = useState([
@@ -217,6 +240,7 @@ function App() {
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
                 <SummaryTab testCases={testCases} summaryNotes={summaryNotes} setSummaryNotes={setSummaryNotes} />
+                
               </TabPanel>
             </Paper>
           </Box>
