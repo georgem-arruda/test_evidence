@@ -17,21 +17,30 @@ import {
   
   function TestCases({ testCases, setTestCases }) {
     const handleAddTestCase = () => {
-      setTestCases(prev => [
-        ...prev,
-        {
-          id: prev.length + 1,
-          description: '',
-          expectedResult: '',
-          actualResult: '',
-          status: 'Selecione o status',
-          evidences: []
-        }
-      ])
+      setTestCases(prev => {
+        const newCases = [
+          ...prev,
+          {
+            id: prev.length + 1,
+            description: '',
+            expectedResult: '',
+            actualResult: '',
+            status: 'Selecione o status',
+            evidences: []
+          }
+        ];
+        // Reatribui os IDs sequencialmente
+        return newCases.map((tc, idx) => ({ ...tc, id: idx + 1 }));
+      });
     }
   
     const handleDeleteTestCase = (id) => {
-      setTestCases(prev => prev.filter(testCase => testCase.id !== id))
+      setTestCases(prev => {
+        if (prev.length === 1) return prev; // Não remove se só tem 1
+        const filtered = prev.filter(testCase => testCase.id !== id);
+        // Reatribui os IDs sequencialmente
+        return filtered.map((tc, idx) => ({ ...tc, id: idx + 1 }));
+      });
     }
   
     const handleTestCaseChange = (id, field, value) => {
