@@ -71,7 +71,7 @@ import {
           backgroundColor: '#ffffff',
           minHeight: '500px',
           height: '700px',
-          width: '1300px',
+          width: '1200px',
           margin: '0 auto',
           display: 'flex',
           flexDirection: 'column',
@@ -151,6 +151,7 @@ import {
                     <MenuItem value="Selecione o status">Selecione o status</MenuItem>
                     <MenuItem value="Aprovado">Aprovado</MenuItem>
                     <MenuItem value="Reprovado">Reprovado</MenuItem>
+                    <MenuItem value="Bloqueado">Bloqueado</MenuItem>
                   </Select>
                 </FormControl>
                 <Box>

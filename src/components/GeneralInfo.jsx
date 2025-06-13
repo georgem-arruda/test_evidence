@@ -41,7 +41,7 @@ function GeneralInfo({ generalInfo, setGeneralInfo }) {
               name="product"
               value={generalInfo.product}
               onChange={handleChange}
-              sx={{ backgroundColor: '#ffffff' }}
+              sx={{ backgroundColor: '#ffffff', minWidth: 600 }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -51,7 +51,7 @@ function GeneralInfo({ generalInfo, setGeneralInfo }) {
               name="version"
               value={generalInfo.version}
               onChange={handleChange}
-              sx={{ backgroundColor: '#ffffff' }}
+              sx={{ backgroundColor: '#ffffff', minWidth: 600 }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -90,7 +90,7 @@ function GeneralInfo({ generalInfo, setGeneralInfo }) {
               name="responsible"
               value={generalInfo.responsible}
               onChange={handleChange}
-              sx={{ backgroundColor: '#ffffff' }}
+              sx={{ backgroundColor: '#ffffff', minWidth: 500 }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -100,7 +100,7 @@ function GeneralInfo({ generalInfo, setGeneralInfo }) {
               name="testType"
               value={generalInfo.testType || ''}
               onChange={handleChange}
-              sx={{ backgroundColor: '#ffffff' }}
+              sx={{ backgroundColor: '#ffffff', minWidth: 434 }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -110,7 +110,7 @@ function GeneralInfo({ generalInfo, setGeneralInfo }) {
               name="testEnvironment"
               value={generalInfo.testEnvironment || ''}
               onChange={handleChange}
-              sx={{ backgroundColor: '#ffffff' }}
+              sx={{ backgroundColor: '#ffffff', minWidth: 288 }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -120,7 +120,7 @@ function GeneralInfo({ generalInfo, setGeneralInfo }) {
               name="os"
               value={generalInfo.os || ''}
               onChange={handleChange}
-              sx={{ backgroundColor: '#ffffff' }}
+              sx={{ backgroundColor: '#ffffff', minWidth: 288 }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -130,7 +130,7 @@ function GeneralInfo({ generalInfo, setGeneralInfo }) {
               name="browser"
               value={generalInfo.browser || ''}
               onChange={handleChange}
-              sx={{ backgroundColor: '#ffffff' }}
+              sx={{ backgroundColor: '#ffffff', minWidth: 288 }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -140,7 +140,7 @@ function GeneralInfo({ generalInfo, setGeneralInfo }) {
               name="database"
               value={generalInfo.database || ''}
               onChange={handleChange}
-              sx={{ backgroundColor: '#ffffff' }}
+              sx={{ backgroundColor: '#ffffff', minWidth: 288 }}
             />
           </Grid>
         </Grid>
@@ -157,11 +157,11 @@ function GeneralInfo({ generalInfo, setGeneralInfo }) {
               label="Objetivo do Teste"
               name="objective"
               multiline
-              rows={15}
+              rows={10}
               value={generalInfo.objective}
               onChange={handleChange}
               required
-              sx={{ backgroundColor: '#ffffff', minWidth: 1200 }}
+              sx={{ backgroundColor: '#ffffff', minWidth: 1225 }}
             />
           </Grid>
         </Grid>
