@@ -5,7 +5,11 @@ import {
   Button,
   Typography,
   Divider,
-  InputAdornment
+  InputAdornment,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
 } from '@mui/material'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -94,14 +98,22 @@ function GeneralInfo({ generalInfo, setGeneralInfo }) {
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              label="Tipo de Teste"
-              name="testType"
-              value={generalInfo.testType || ''}
-              onChange={handleChange}
-              sx={{ backgroundColor: '#ffffff', minWidth: 434 }}
-            />
+            <FormControl fullWidth sx={{ backgroundColor: '#ffffff', minWidth: 434 }}>
+              <InputLabel id="test-type-label">Tipo de Teste</InputLabel>
+              <Select
+                labelId="test-type-label"
+                label="Tipo de Teste"
+                name="testType"
+                value={generalInfo.testType || ''}
+                onChange={handleChange}
+              >
+                <MenuItem value="">Selecione o tipo</MenuItem>
+                <MenuItem value="Funcional">Funcional</MenuItem>
+                <MenuItem value="Unitário">Unitário</MenuItem>
+                <MenuItem value="Integração">Integração</MenuItem>
+                <MenuItem value="API">API</MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField
