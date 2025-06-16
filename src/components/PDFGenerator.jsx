@@ -134,9 +134,11 @@ export const generatePDF = async (generalInfo, testCases, summary) => {
   for (const testCase of testCases) {
     // Cabeçalho colorido
     if (testCase.status === 'Reprovado') {
-      doc.setFillColor(220, 38, 38) // vermelho
+      doc.setFillColor(236, 146, 146) // vermelho
+    } else if (testCase.status === 'Aprovado'){
+      doc.setFillColor(185, 215, 167) // Verde
     } else {
-      doc.setFillColor(0, 0, 0) // preto
+      doc.setFillColor(237, 207, 116) // Amarelo
     }
     doc.rect(margin, yOffset, pageWidth - 2 * margin, 10, 'F')
     doc.setFont('helvetica', 'bold')
