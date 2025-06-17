@@ -17,7 +17,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import ptBR from 'date-fns/locale/pt-BR'; // Para português
 
-function GeneralInfo({ generalInfo, setGeneralInfo }) {
+function GeneralInfo({ generalInfo, setGeneralInfo, showFieldErrors, errorFields }) {
   const handleChange = (e) => {
     const { name, value } = e.target
     setGeneralInfo(prev => ({
@@ -46,6 +46,8 @@ function GeneralInfo({ generalInfo, setGeneralInfo }) {
               value={generalInfo.product}
               onChange={handleChange}
               sx={{ backgroundColor: '#ffffff', minWidth: 600 }}
+              error={showFieldErrors && !generalInfo.product}
+              helperText={showFieldErrors && !generalInfo.product ? 'Campo obrigatório' : ''}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -95,6 +97,8 @@ function GeneralInfo({ generalInfo, setGeneralInfo }) {
               value={generalInfo.responsible}
               onChange={handleChange}
               sx={{ backgroundColor: '#ffffff', minWidth: 500 }}
+              error={showFieldErrors && !generalInfo.responsible}
+              helperText={showFieldErrors && !generalInfo.responsible ? 'Campo obrigatório' : ''}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -174,6 +178,8 @@ function GeneralInfo({ generalInfo, setGeneralInfo }) {
               onChange={handleChange}
               required
               sx={{ backgroundColor: '#ffffff', minWidth: 1225 }}
+              error={showFieldErrors && !generalInfo.objective}
+              helperText={showFieldErrors && !generalInfo.objective ? 'Campo obrigatório' : ''}
             />
           </Grid>
         </Grid>

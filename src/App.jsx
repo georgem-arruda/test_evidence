@@ -10,7 +10,8 @@ import {
   createTheme,
   CssBaseline,
   Button,
-  TextField
+  TextField,
+  Alert
 } from '@mui/material'
 import DownloadIcon from '@mui/icons-material/Download'
 import GeneralInfo from './components/GeneralInfo'
@@ -83,9 +84,10 @@ function SummaryTab({ testCases, summaryNotes, setSummaryNotes }) {
   const rejected = testCases.filter(tc => tc.status === 'Reprovado').length;
   const pending = testCases.filter(tc => tc.status === 'Selecione o status').length;
   const coverage = total > 0 ? ((approved / total) * 100).toFixed(2) : '0.00';
+  const blocked = testCases.filter(tc => tc.status === 'Bloqueado').length;
 
   return (
-    <Box sx={{ background: '#fff', borderRadius: 3, mb: 4 }}>
+    <Box sx={{ background: '#fff', borderRadius: 3, mb: 3 }}>
       <Typography variant="h4" gutterBottom sx={{ fontWeight: 700 }}>
         Resumo Geral
       </Typography>
@@ -103,6 +105,10 @@ function SummaryTab({ testCases, summaryNotes, setSummaryNotes }) {
           <Typography variant="subtitle1" sx={{ color: '#e53935' }}>{rejected}</Typography>
         </Box>
         <Box sx={{ background: '#f7f9fb', borderRadius: 2, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant="subtitle1">Casos Bloqueados:</Typography>
+          <Typography variant="subtitle1" sx={{ color: '#1976d2' }}>{blocked}</Typography>
+        </Box>
+        <Box sx={{ background: '#f7f9fb', borderRadius: 2, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="subtitle1">Casos Pendentes:</Typography>
           <Typography variant="subtitle1" sx={{ color: '#fbc02d' }}>{pending}</Typography>
         </Box>
@@ -112,13 +118,13 @@ function SummaryTab({ testCases, summaryNotes, setSummaryNotes }) {
         </Box>
       </Box>
       <Box sx={{ background: '#fff', borderRadius: 3, p: 3 }}>
-                  <Typography variant="h4" gutterBottom sx={{ fontWeight: 700 }}>
+                  <Typography variant="h4" gutterBottom sx={{ fontWeight: 500 }}>
                     Observações Finais e Recomendações
                   </Typography>
                   <TextField
                     fullWidth
                     multiline
-                    minRows={6}
+                    minRows={3}
                     value={summaryNotes}
                     onChange={e => setSummaryNotes(e.target.value)}
                     placeholder="Insira observações e recomendações"
@@ -155,27 +161,42 @@ function App() {
     }
   ]);
   const [summaryNotes, setSummaryNotes] = useState('');
+  const [errorFields, setErrorFields] = useState([]);
+  const [showFieldErrors, setShowFieldErrors] = useState(false);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
 
-  // Função para checar se todos os campos obrigatórios estão preenchidos
-  const isFormValid = () => {
-    if (!generalInfo.product || !generalInfo.objective || !generalInfo.responsible) return false;
-    if (!testCases.length) return false;
-    for (const testCase of testCases) {
-      if (!testCase.description || !testCase.expectedResult || !testCase.actualResult) return false;
-    }
-    return true;
+  // Nova função para checar campos obrigatórios e retornar lista dos que estão vazios
+  const getEmptyRequiredFields = () => {
+    const empty = [];
+    if (!generalInfo.product) empty.push('Projeto/Produto');
+    if (!generalInfo.objective) empty.push('Objetivo do Teste');
+    if (!generalInfo.responsible) empty.push('Responsável pelo Teste');
+    if (!testCases.length) empty.push('Pelo menos 1 Caso de Teste');
+    testCases.forEach((testCase, idx) => {
+      if (!testCase.description) empty.push(`Descrição do Caso ${idx + 1}`);
+      if (!testCase.expectedResult) empty.push(`Resultado Esperado do Caso ${idx + 1}`);
+      if (!testCase.actualResult) empty.push(`Resultado Obtido do Caso ${idx + 1}`);
+    });
+    return empty;
   };
 
   const handleGeneratePDF = async () => {
-    if (!isFormValid()) return;
+    const emptyFields = getEmptyRequiredFields();
+    if (emptyFields.length > 0) {
+      setErrorFields(emptyFields);
+      setShowFieldErrors(true);
+      return;
+    }
+    setErrorFields([]);
+    setShowFieldErrors(false);
     await generatePDF(generalInfo, testCases, {
       total: testCases.length,
       approved: testCases.filter(tc => tc.status === 'Aprovado').length,
       rejected: testCases.filter(tc => tc.status === 'Reprovado').length,
+      blocked: testCases.filter(tc => tc.status === 'Bloqueado').length,
       coverage: testCases.length > 0 ? ((testCases.filter(tc => tc.status === 'Aprovado').length / testCases.length) * 100).toFixed(1) : '0.0',
       summaryNotes
     });
@@ -197,10 +218,9 @@ function App() {
                 color="primary"
                 startIcon={<DownloadIcon />}
                 onClick={handleGeneratePDF}
-                disabled={!isFormValid()}
-              >
+            >
                 Baixar Relatório
-              </Button>
+            </Button>
             <Paper elevation={3} sx={{
               mt: 4,
               backgroundColor: '#ffffff',
@@ -228,6 +248,8 @@ function App() {
                 <GeneralInfo
                   generalInfo={generalInfo}
                   setGeneralInfo={setGeneralInfo}
+                  showFieldErrors={showFieldErrors}
+                  errorFields={errorFields}
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={1}>
@@ -235,6 +257,8 @@ function App() {
                   <TestCases
                     testCases={testCases}
                     setTestCases={setTestCases}
+                    showFieldErrors={showFieldErrors}
+                    errorFields={errorFields}
                   />
                 </Box>
               </TabPanel>

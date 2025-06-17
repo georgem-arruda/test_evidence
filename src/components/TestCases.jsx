@@ -15,7 +15,7 @@ import {
   import DeleteIcon from '@mui/icons-material/Delete'
   import AddIcon from '@mui/icons-material/Add'
   
-  function TestCases({ testCases, setTestCases }) {
+  function TestCases({ testCases, setTestCases, showFieldErrors, errorFields }) {
     const handleAddTestCase = () => {
       setTestCases(prev => {
         const newCases = [
@@ -123,6 +123,8 @@ import {
                     handleTestCaseChange(testCase.id, 'description', e.target.value)
                   }
                   sx={{ backgroundColor: '#f8fafc' }}
+                  error={showFieldErrors && !testCase.description}
+                  helperText={showFieldErrors && !testCase.description ? 'Campo obrigatório' : ''}
                 />
                 <TextField
                   fullWidth
@@ -135,6 +137,8 @@ import {
                   }
                   placeholder="Descreva o resultado esperado"
                   sx={{ backgroundColor: '#f8fafc' }}
+                  error={showFieldErrors && !testCase.expectedResult}
+                  helperText={showFieldErrors && !testCase.expectedResult ? 'Campo obrigatório' : ''}
                 />
                 <TextField
                   fullWidth
@@ -147,6 +151,8 @@ import {
                   }
                   placeholder="Descreva o resultado obtido"
                   sx={{ backgroundColor: '#f8fafc' }}
+                  error={showFieldErrors && !testCase.actualResult}
+                  helperText={showFieldErrors && !testCase.actualResult ? 'Campo obrigatório' : ''}
                 />
                 <FormControl fullWidth>
                   <InputLabel>Status</InputLabel>

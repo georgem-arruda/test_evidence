@@ -114,6 +114,7 @@ export const generatePDF = async (generalInfo, testCases, summary) => {
   drawHorizontalLine(yOffset)
   yOffset += 8
 
+
   // Escopo do Teste (label em cima, texto embaixo)
   doc.setFont('helvetica', 'bold')
   doc.setFontSize(12)
@@ -228,10 +229,11 @@ export const generatePDF = async (generalInfo, testCases, summary) => {
   doc.text('Resumo Geral', margin, yOffset)
   yOffset += 8
   doc.setFont('helvetica', 'normal')
-  doc.setFontSize(12)
+  doc.setFontSize(10)
   addLabeledTextInline('Total de Casos de Teste Executados:', String(summary.total))
   addLabeledTextInline('Casos Aprovados:', String(summary.approved))
   addLabeledTextInline('Casos Reprovados:', String(summary.rejected))
+  addLabeledTextInline('Casos Bloqueados:', String(summary.blocked))
   addLabeledTextInline('Cobertura dos Testes:', `${summary.coverage}%`)
   yOffset += 8
 
