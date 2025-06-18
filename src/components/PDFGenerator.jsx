@@ -1,5 +1,6 @@
 import { jsPDF } from 'jspdf'
 import html2canvas from 'html2canvas'
+import { useRef } from 'react'
 
 export const generatePDF = async (generalInfo, testCases, summary) => {
   const doc = new jsPDF()

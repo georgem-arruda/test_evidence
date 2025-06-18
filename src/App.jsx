@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import {
   Container,
   Typography,
@@ -163,6 +163,10 @@ function App() {
   const [summaryNotes, setSummaryNotes] = useState('');
   const [errorFields, setErrorFields] = useState([]);
   const [showFieldErrors, setShowFieldErrors] = useState(false);
+  const productRef = useRef();
+  const responsibleRef = useRef();
+  const objectiveRef = useRef();
+  const testCaseRefs = useRef([]); // array de objetos: { description, expectedResult, actualResult }
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -188,6 +192,39 @@ function App() {
     if (emptyFields.length > 0) {
       setErrorFields(emptyFields);
       setShowFieldErrors(true);
+      // Foco no primeiro campo obrigatório vazio
+      if (!generalInfo.product && productRef.current) {
+        setTabValue(0);
+        productRef.current.focus();
+        return;
+      }
+      if (!generalInfo.responsible && responsibleRef.current) {
+        setTabValue(0);
+        responsibleRef.current.focus();
+        return;
+      }
+      if (!generalInfo.objective && objectiveRef.current) {
+        setTabValue(0);
+        objectiveRef.current.focus();
+        return;
+      }
+      for (let i = 0; i < testCases.length; i++) {
+        if (!testCases[i].description && testCaseRefs.current[i]?.description) {
+          setTabValue(1);
+          testCaseRefs.current[i].description.focus();
+          return;
+        }
+        if (!testCases[i].expectedResult && testCaseRefs.current[i]?.expectedResult) {
+          setTabValue(1);
+          testCaseRefs.current[i].expectedResult.focus();
+          return;
+        }
+        if (!testCases[i].actualResult && testCaseRefs.current[i]?.actualResult) {
+          setTabValue(1);
+          testCaseRefs.current[i].actualResult.focus();
+          return;
+        }
+      }
       return;
     }
     setErrorFields([]);
@@ -197,6 +234,7 @@ function App() {
       approved: testCases.filter(tc => tc.status === 'Aprovado').length,
       rejected: testCases.filter(tc => tc.status === 'Reprovado').length,
       blocked: testCases.filter(tc => tc.status === 'Bloqueado').length,
+      pending: testCases.filter(tc => tc.status === 'Selecione o status').length,
       coverage: testCases.length > 0 ? ((testCases.filter(tc => tc.status === 'Aprovado').length / testCases.length) * 100).toFixed(1) : '0.0',
       summaryNotes
     });
@@ -250,6 +288,11 @@ function App() {
                   setGeneralInfo={setGeneralInfo}
                   showFieldErrors={showFieldErrors}
                   errorFields={errorFields}
+                  refs={{
+                    product: productRef,
+                    responsible: responsibleRef,
+                    objective: objectiveRef
+                  }}
                 />
               </TabPanel>
               <TabPanel value={tabValue} index={1}>
@@ -259,6 +302,7 @@ function App() {
                     setTestCases={setTestCases}
                     showFieldErrors={showFieldErrors}
                     errorFields={errorFields}
+                    refs={testCaseRefs}
                   />
                 </Box>
               </TabPanel>
