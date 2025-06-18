@@ -129,6 +129,7 @@ import {
                     error={showFieldErrors && !testCase.description}
                     helperText={showFieldErrors && !testCase.description ? 'Campo obrigatório' : ''}
                     inputRef={el => refs.current[idx].description = el}
+                    required
                   />
                   <TextField
                     fullWidth
@@ -144,6 +145,7 @@ import {
                     error={showFieldErrors && !testCase.expectedResult}
                     helperText={showFieldErrors && !testCase.expectedResult ? 'Campo obrigatório' : ''}
                     inputRef={el => refs.current[idx].expectedResult = el}
+                    required
                   />
                   <TextField
                     fullWidth
@@ -159,6 +161,7 @@ import {
                     error={showFieldErrors && !testCase.actualResult}
                     helperText={showFieldErrors && !testCase.actualResult ? 'Campo obrigatório' : ''}
                     inputRef={el => refs.current[idx].actualResult = el}
+                    required
                   />
                   <FormControl fullWidth>
                     <InputLabel>Status</InputLabel>
