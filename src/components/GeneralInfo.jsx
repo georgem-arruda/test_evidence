@@ -45,11 +45,11 @@ function GeneralInfo({ generalInfo, setGeneralInfo, showFieldErrors, errorFields
               name="product"
               value={generalInfo.product}
               onChange={handleChange}
+              required
               sx={{ backgroundColor: '#ffffff', minWidth: 600 }}
               error={showFieldErrors && !generalInfo.product}
               helperText={showFieldErrors && !generalInfo.product ? 'Campo obrigatório' : ''}
               inputRef={refs?.product}
-              required
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -98,11 +98,11 @@ function GeneralInfo({ generalInfo, setGeneralInfo, showFieldErrors, errorFields
               name="responsible"
               value={generalInfo.responsible}
               onChange={handleChange}
+              required
               sx={{ backgroundColor: '#ffffff', minWidth: 500 }}
               error={showFieldErrors && !generalInfo.responsible}
               helperText={showFieldErrors && !generalInfo.responsible ? 'Campo obrigatório' : ''}
               inputRef={refs?.responsible}
-              required
             />
           </Grid>
           <Grid item xs={12} md={6}>
