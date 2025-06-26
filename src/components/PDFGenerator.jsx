@@ -172,6 +172,49 @@ export const generatePDF = async (generalInfo, testCases, summary) => {
   
   
 
+  // RESUMO GERAL (antes do escopo)
+  // Cabeçalho do resumo
+  const summaryTableWidth = tableWidth;
+  const summaryStartX = startX;
+  let summaryY = yOffset;
+  const summaryRowHeight = 12;
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(13);
+  // Cabeçalho cinza claro
+  doc.setFillColor(230, 230, 230);
+  doc.rect(summaryStartX, summaryY, summaryTableWidth, summaryRowHeight, 'F');
+  doc.setTextColor(60, 60, 60);
+  doc.text('Resumo Geral', pageWidth / 2, summaryY + 8, { align: 'center' });
+  summaryY += summaryRowHeight;
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(0, 0, 0);
+
+  // Linhas do resumo
+  const summaryRows = [
+    { label: 'Total de Casos de Teste Executados', value: summary.total, color: [200, 200, 200] },
+    { label: 'Casos Aprovados', value: summary.approved, color: [185, 215, 167] },
+    { label: 'Casos Reprovados', value: summary.rejected, color: [236, 146, 146] },
+    { label: 'Casos Bloqueados', value: summary.blocked, color: [237, 207, 116] },
+    { label: 'Cobertura dos Testes', value: `${summary.coverage}%`, color: [200, 200, 200] },
+  ];
+  const labelWidth = Math.round(summaryTableWidth * 0.7);
+  const valueWidth = summaryTableWidth - labelWidth;
+  for (const row of summaryRows) {
+    // Label
+    doc.setFont('helvetica', 'normal');
+    doc.setFillColor(245, 245, 245);
+    doc.rect(summaryStartX, summaryY, labelWidth, summaryRowHeight, 'F');
+    doc.text(row.label, summaryStartX + 3, summaryY + 8);
+    // Valor
+    doc.setFont('helvetica', 'bold');
+    doc.setFillColor(...row.color);
+    doc.rect(summaryStartX + labelWidth, summaryY, valueWidth, summaryRowHeight, 'F');
+    doc.text(String(row.value), summaryStartX + labelWidth + valueWidth / 2, summaryY + 8, { align: 'center' });
+    summaryY += summaryRowHeight;
+  }
+  yOffset = summaryY + 8;
+
   // Escopo
   doc.setFont('helvetica', 'bold')
   doc.setFontSize(12)
