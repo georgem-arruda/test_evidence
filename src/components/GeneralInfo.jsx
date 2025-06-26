@@ -147,6 +147,8 @@ function GeneralInfo({ generalInfo, setGeneralInfo, showFieldErrors, errorFields
                 <MenuItem value="Linux">Linux</MenuItem>
                 <MenuItem value="MacOS">MacOS</MenuItem>
                 <MenuItem value="Windows">Windows</MenuItem>
+                <MenuItem value="IOS">IOS</MenuItem>
+                <MenuItem value="Android">Android</MenuItem>
               </Select>
             </FormControl>
           </Grid>
