@@ -11,7 +11,8 @@ import {
   CssBaseline,
   Button,
   TextField,
-  Alert
+  Alert,
+  Grid
 } from '@mui/material'
 import DownloadIcon from '@mui/icons-material/Download'
 import GeneralInfo from './components/GeneralInfo'
@@ -118,21 +119,20 @@ function SummaryTab({ testCases, summaryNotes, setSummaryNotes }) {
         </Box>
       </Box>
       <Box sx={{ background: '#fff', borderRadius: 3, p: 3 }}>
-                  <Typography variant="h4" gutterBottom sx={{ fontWeight: 500 }}>
-                    Observações Finais e Recomendações
-                  </Typography>
-                  <TextField
-                    fullWidth
-                    multiline
-                    minRows={3}
-                    value={summaryNotes}
-                    onChange={e => setSummaryNotes(e.target.value)}
-                    placeholder="Insira observações e recomendações"
-                    sx={{ backgroundColor: '#f7f9fb' }}
-                  />
-                </Box>
+        <Typography variant="h4" gutterBottom sx={{ fontWeight: 500 }}>
+          Observações Finais e Recomendações
+        </Typography>
+            <TextField
+              fullWidth
+              multiline
+              rows={3}
+              value={summaryNotes}
+              onChange={e => setSummaryNotes(e.target.value)}
+              placeholder="Insira observações e recomendações"
+              sx={{ backgroundColor: '#f7f9fb' }}
+            />
+      </Box>
     </Box>
-    
   );
 }
 
@@ -252,12 +252,12 @@ function App() {
               </Typography>
             </Box>
             <Button
-                variant="contained"
-                color="primary"
-                startIcon={<DownloadIcon />}
-                onClick={handleGeneratePDF}
+              variant="contained"
+              color="primary"
+              startIcon={<DownloadIcon />}
+              onClick={handleGeneratePDF}
             >
-                Baixar Relatório
+              Baixar Relatório
             </Button>
             <Paper elevation={3} sx={{
               mt: 4,
@@ -308,7 +308,7 @@ function App() {
               </TabPanel>
               <TabPanel value={tabValue} index={2}>
                 <SummaryTab testCases={testCases} summaryNotes={summaryNotes} setSummaryNotes={setSummaryNotes} />
-                
+
               </TabPanel>
             </Paper>
           </Box>
