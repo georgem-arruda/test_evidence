@@ -134,14 +134,21 @@ function GeneralInfo({ generalInfo, setGeneralInfo, showFieldErrors, errorFields
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              label="Sistema Operacional"
-              name="os"
-              value={generalInfo.os || ''}
-              onChange={handleChange}
-              sx={{ backgroundColor: '#ffffff', minWidth: 288 }}
-            />
+            <FormControl fullWidth sx={{ backgroundColor: '#ffffff', minWidth: 288 }}>
+              <InputLabel id="sistemaOperacional-label">Sistema Operacional</InputLabel>
+              <Select
+                labelId="op-sys-label"
+                label="Sistema Operacional"
+                name="os"
+                value={generalInfo.testType || ''}
+                onChange={handleChange}
+              >
+                <MenuItem value="">Selecione o tipo</MenuItem>
+                <MenuItem value="Linux">Linux</MenuItem>
+                <MenuItem value="MacOS">MacOS</MenuItem>
+                <MenuItem value="Windows">Windows</MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField
@@ -154,14 +161,21 @@ function GeneralInfo({ generalInfo, setGeneralInfo, showFieldErrors, errorFields
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              label="Banco de Dados"
-              name="database"
-              value={generalInfo.database || ''}
-              onChange={handleChange}
-              sx={{ backgroundColor: '#ffffff', minWidth: 288 }}
-            />
+            <FormControl fullWidth sx={{ backgroundColor: '#ffffff', minWidth: 288 }}>
+              <InputLabel id="database-label">Banco de Dados</InputLabel>
+              <Select
+                labelId="database-label"
+                label="Banco de Dados"
+                name="database"
+                value={generalInfo.testType || ''}
+                onChange={handleChange}
+              >
+                <MenuItem value="">Selecione o tipo</MenuItem>
+                <MenuItem value="Postgres">Linux</MenuItem>
+                <MenuItem value="SQL Server">MacOS</MenuItem>
+                <MenuItem value="Oracle">Windows</MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
         </Grid>
 
