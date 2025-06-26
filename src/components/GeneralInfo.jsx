@@ -140,7 +140,7 @@ function GeneralInfo({ generalInfo, setGeneralInfo, showFieldErrors, errorFields
                 labelId="op-sys-label"
                 label="Sistema Operacional"
                 name="os"
-                value={generalInfo.testType || ''}
+                value={generalInfo.os || ''}
                 onChange={handleChange}
               >
                 <MenuItem value="">Selecione o tipo</MenuItem>
@@ -167,13 +167,13 @@ function GeneralInfo({ generalInfo, setGeneralInfo, showFieldErrors, errorFields
                 labelId="database-label"
                 label="Banco de Dados"
                 name="database"
-                value={generalInfo.testType || ''}
+                value={generalInfo.database || ''}
                 onChange={handleChange}
               >
                 <MenuItem value="">Selecione o tipo</MenuItem>
-                <MenuItem value="Postgres">Linux</MenuItem>
-                <MenuItem value="SQL Server">MacOS</MenuItem>
-                <MenuItem value="Oracle">Windows</MenuItem>
+                <MenuItem value="Postgres">Postgres</MenuItem>
+                <MenuItem value="SQL Server">SQL Server</MenuItem>
+                <MenuItem value="Oracle">Oracle</MenuItem>
               </Select>
             </FormControl>
           </Grid>
