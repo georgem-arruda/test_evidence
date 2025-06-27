@@ -46,7 +46,7 @@ function GeneralInfo({ generalInfo, setGeneralInfo, showFieldErrors, errorFields
               value={generalInfo.product}
               onChange={handleChange}
               required
-              sx={{ backgroundColor: '#ffffff', minWidth: 600 }}
+              sx={{ backgroundColor: '#ffffff', minWidth: 600, borderRadius: 2, boxShadow: '0 1px 4px #eee', mb: 2 }}
               error={showFieldErrors && !generalInfo.product}
               helperText={showFieldErrors && !generalInfo.product ? 'Campo obrigatório' : ''}
               inputRef={refs?.product}
@@ -59,7 +59,7 @@ function GeneralInfo({ generalInfo, setGeneralInfo, showFieldErrors, errorFields
               name="version"
               value={generalInfo.version}
               onChange={handleChange}
-              sx={{ backgroundColor: '#ffffff', minWidth: 600 }}
+              sx={{ backgroundColor: '#ffffff', minWidth: 600, borderRadius: 2, boxShadow: '0 1px 4px #eee', mb: 2 }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -77,7 +77,7 @@ function GeneralInfo({ generalInfo, setGeneralInfo, showFieldErrors, errorFields
                 slotProps={{
                   textField: {
                     fullWidth: true,
-                    sx: { backgroundColor: '#ffffff' },
+                    sx: { backgroundColor: '#ffffff', borderRadius: 2, boxShadow: '0 1px 4px #eee', mb: 2 },
                     placeholder: 'DD/MM/AAAA',
                     InputProps: {
                       endAdornment: (
@@ -99,14 +99,14 @@ function GeneralInfo({ generalInfo, setGeneralInfo, showFieldErrors, errorFields
               value={generalInfo.responsible}
               onChange={handleChange}
               required
-              sx={{ backgroundColor: '#ffffff', minWidth: 500 }}
+              sx={{ backgroundColor: '#ffffff', minWidth: 500, borderRadius: 2, boxShadow: '0 1px 4px #eee', mb: 2 }}
               error={showFieldErrors && !generalInfo.responsible}
               helperText={showFieldErrors && !generalInfo.responsible ? 'Campo obrigatório' : ''}
               inputRef={refs?.responsible}
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <FormControl fullWidth sx={{ backgroundColor: '#ffffff', minWidth: 434 }}>
+            <FormControl fullWidth sx={{ backgroundColor: '#ffffff', minWidth: 434, borderRadius: 2, boxShadow: '0 1px 4px #eee', mb: 2 }}>
               <InputLabel id="test-type-label">Tipo de Teste</InputLabel>
               <Select
                 labelId="test-type-label"
@@ -130,11 +130,11 @@ function GeneralInfo({ generalInfo, setGeneralInfo, showFieldErrors, errorFields
               name="testEnvironment"
               value={generalInfo.testEnvironment || ''}
               onChange={handleChange}
-              sx={{ backgroundColor: '#ffffff', minWidth: 288 }}
+              sx={{ backgroundColor: '#ffffff', minWidth: 288, borderRadius: 2, boxShadow: '0 1px 4px #eee', mb: 2 }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <FormControl fullWidth sx={{ backgroundColor: '#ffffff', minWidth: 288 }}>
+            <FormControl fullWidth sx={{ backgroundColor: '#ffffff', minWidth: 288, borderRadius: 2, boxShadow: '0 1px 4px #eee', mb: 2 }}>
               <InputLabel id="sistemaOperacional-label">Sistema Operacional</InputLabel>
               <Select
                 labelId="op-sys-label"
@@ -159,11 +159,11 @@ function GeneralInfo({ generalInfo, setGeneralInfo, showFieldErrors, errorFields
               name="browser"
               value={generalInfo.browser || ''}
               onChange={handleChange}
-              sx={{ backgroundColor: '#ffffff', minWidth: 288 }}
+              sx={{ backgroundColor: '#ffffff', minWidth: 288, borderRadius: 2, boxShadow: '0 1px 4px #eee', mb: 2 }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <FormControl fullWidth sx={{ backgroundColor: '#ffffff', minWidth: 288 }}>
+            <FormControl fullWidth sx={{ backgroundColor: '#ffffff', minWidth: 288, borderRadius: 2, boxShadow: '0 1px 4px #eee', mb: 2 }}>
               <InputLabel id="database-label">Banco de Dados</InputLabel>
               <Select
                 labelId="database-label"
@@ -193,11 +193,11 @@ function GeneralInfo({ generalInfo, setGeneralInfo, showFieldErrors, errorFields
               label="Objetivo do Teste"
               name="objective"
               multiline
-              rows={10}
+              rows={5}
               value={generalInfo.objective}
               onChange={handleChange}
               required
-              sx={{ backgroundColor: '#ffffff', minWidth: 1225 }}
+              sx={{ backgroundColor: '#ffffff', minWidth: 1225, borderRadius: 2, boxShadow: '0 1px 4px #eee', mb: 2 }}
               error={showFieldErrors && !generalInfo.objective}
               helperText={showFieldErrors && !generalInfo.objective ? 'Campo obrigatório' : ''}
               inputRef={refs?.objective}

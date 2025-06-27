@@ -22,7 +22,7 @@ import { generatePDF } from './components/PDFGenerator'
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#1976d2',
+      main: '#e91e63',
     },
     secondary: {
       main: '#dc004e',
@@ -107,7 +107,7 @@ function SummaryTab({ testCases, summaryNotes, setSummaryNotes }) {
         </Box>
         <Box sx={{ background: '#f7f9fb', borderRadius: 2, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="subtitle1">Casos Bloqueados:</Typography>
-          <Typography variant="subtitle1" sx={{ color: '#1976d2' }}>{blocked}</Typography>
+          <Typography variant="subtitle1" sx={{ color: '#e91e63' }}>{blocked}</Typography>
         </Box>
         <Box sx={{ background: '#f7f9fb', borderRadius: 2, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="subtitle1">Casos Pendentes:</Typography>
@@ -245,42 +245,75 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box sx={{ backgroundColor: '#ffffff', minHeight: '100vh' }}>
-        <Container maxWidth="lg">
-          <Box sx={{ my: 4 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-              <Typography variant="h3" component="h1">
-                Relatório de Evidências de Testes de Software
-              </Typography>
-            </Box>
+      <Box sx={{ minHeight: '100vh', minWidth: '100vw', width: '100vw', height: '100vh', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', background: 'none', p: 0, m: 0 }}>
+        <Paper elevation={0} sx={{
+          width: '100vw',
+          height: '100vh',
+          minHeight: '100vh',
+          minWidth: '100vw',
+          borderRadius: 0,
+          boxShadow: 'none',
+          background: '#fff',
+          border: 'none',
+          display: 'flex',
+          flexDirection: 'column',
+          p: { xs: 1, sm: 3, md: 5 },
+        }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 3, mt: 2, position: 'relative', width: '100%' }}>
+            <Typography variant="h3" component="h1" sx={{ flex: 1, textAlign: 'center', fontWeight: 700 }}>
+              Relatório de Evidências de Testes de Software
+            </Typography>
             <Button
               variant="contained"
-              color="primary"
-              startIcon={<DownloadIcon />}
+              sx={{
+                position: 'absolute',
+                right: { xs: 8, sm: 24, md: 40 },
+                top: 0,
+                borderRadius: '24px',
+                fontWeight: 'bold',
+                fontSize: '1rem',
+                px: 4,
+                py: 1.5,
+                background: '#e6007a',
+                color: '#fff',
+                boxShadow: 'none',
+                '&:hover': {
+                  background: '#ad1457',
+                },
+              }}
               onClick={handleGeneratePDF}
             >
-              Baixar Relatório
+              Gerar Relatório
             </Button>
-            <Paper elevation={3} sx={{
-              mt: 4,
-              backgroundColor: '#ffffff',
-              height: '800px',
-              width: '1300px',
+          </Box>
+          
+          <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', width: '100%' }}>
+            <Paper elevation={0} sx={{
+              backgroundColor: '#fff',
+              borderRadius: 3,
+              boxShadow: '0 1px 8px 0 #e0e0e0',
+              width: '100%',
+              maxWidth: 1350,
+              minWidth: 320,
               margin: '0 auto',
               display: 'flex',
               flexDirection: 'column',
+              border: '1.5px solid #bdbdbd',
+              p: 3,
+              flex: 1,
+              minHeight: 0,
             }}>
-              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <Box sx={{ borderBottom: 1, borderColor: 'divider', borderRadius: 2, overflow: 'hidden' }}>
                 <Tabs
                   value={tabValue}
                   onChange={handleTabChange}
                   aria-label="test evidence tabs"
                   variant="fullWidth"
-                  sx={{ minHeight: 64 }}
+                  sx={{ minHeight: 64, borderRadius: 2, overflow: 'hidden' }}
                 >
-                  <Tab label="Informações e Escopo" sx={{ minHeight: 64, fontSize: 18 }} />
-                  <Tab label="Testes" sx={{ minHeight: 64, fontSize: 18 }} />
-                  <Tab label="Resumo" sx={{ minHeight: 64, fontSize: 18 }} />
+                  <Tab label="Informações e Escopo" sx={{ minHeight: 64, fontSize: 18, borderRadius: '12px 12px 0 0' }} />
+                  <Tab label="Casos de Testes" sx={{ minHeight: 64, fontSize: 18, borderRadius: '12px 12px 0 0' }} />
+                  <Tab label="Resumo" sx={{ minHeight: 64, fontSize: 18, borderRadius: '12px 12px 0 0' }} />
                 </Tabs>
               </Box>
 
@@ -314,7 +347,7 @@ function App() {
               </TabPanel>
             </Paper>
           </Box>
-        </Container>
+        </Paper>
       </Box>
     </ThemeProvider>
   )

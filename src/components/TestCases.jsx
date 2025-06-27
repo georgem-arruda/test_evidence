@@ -89,8 +89,27 @@ import {
       >
         <Box sx={{ mt: 2 }}>
           <Button
-            variant="contained"
-            color="primary"
+            variant="outlined"
+            sx={{
+              border: '2px solid #e6007a',
+              color: '#e6007a',
+              background: '#fff',
+              borderRadius: '24px',
+              fontWeight: 'bold',
+              fontSize: '1rem',
+              padding: '18px 0',
+              maxWidth: '320px',
+              minWidth: '260px',
+              width: '100%',
+              whiteSpace: 'nowrap',
+              transition: 'background 0.2s, color 0.2s',
+              background: '#e6007a',
+              color: '#fff',
+              boxShadow: 'none',
+              '&:hover': {
+                background: '#ad1457',
+              },
+            }}
             startIcon={<AddIcon />}
             onClick={handleAddTestCase}
           >
@@ -111,7 +130,7 @@ import {
               <Card
                 key={testCase.id}
                 elevation={2}
-                sx={{ mb: 3, p: 3, backgroundColor: '#fafafa', borderRadius: 2 }}
+                sx={{ mb: 3, p: 3, backgroundColor: '#fafafa', borderRadius: 2, boxShadow: '0 1px 4px #eee' }}
               >
                 <Typography variant="h5" sx={{ mb: 2, fontWeight: 600 }}>
                   CT-{String(testCase.id).padStart(4, '0')}
@@ -122,47 +141,49 @@ import {
                     fullWidth
                     label="Descrição"
                     value={testCase.description}
-                    onChange={(e) =>
-                      handleTestCaseChange(testCase.id, 'description', e.target.value)
-                    }
-                    sx={{ backgroundColor: '#f8fafc' }}
+                    onChange={(e) => handleTestCaseChange(testCase.id, 'description', e.target.value)}
+                    sx={{ backgroundColor: '#f8fafc', borderRadius: 2, boxShadow: '0 1px 4px #eee', mb: 2 }}
                     error={showFieldErrors && !testCase.description}
                     helperText={showFieldErrors && !testCase.description ? 'Campo obrigatório' : ''}
                     inputRef={el => refs.current[idx].description = el}
                     required
                   />
-                  <TextField
-                    fullWidth
-                    label="Resultado Esperado"
-                    multiline
-                    minRows={3}
-                    value={testCase.expectedResult}
-                    onChange={(e) =>
-                      handleTestCaseChange(testCase.id, 'expectedResult', e.target.value)
-                    }
-                    placeholder="Descreva o resultado esperado"
-                    sx={{ backgroundColor: '#f8fafc' }}
-                    error={showFieldErrors && !testCase.expectedResult}
-                    helperText={showFieldErrors && !testCase.expectedResult ? 'Campo obrigatório' : ''}
-                    inputRef={el => refs.current[idx].expectedResult = el}
-                    required
-                  />
-                  <TextField
-                    fullWidth
-                    label="Resultado Obtido"
-                    multiline
-                    minRows={3}
-                    value={testCase.actualResult}
-                    onChange={(e) =>
-                      handleTestCaseChange(testCase.id, 'actualResult', e.target.value)
-                    }
-                    placeholder="Descreva o resultado obtido"
-                    sx={{ backgroundColor: '#f8fafc' }}
-                    error={showFieldErrors && !testCase.actualResult}
-                    helperText={showFieldErrors && !testCase.actualResult ? 'Campo obrigatório' : ''}
-                    inputRef={el => refs.current[idx].actualResult = el}
-                    required
-                  />
+                  <Grid container spacing={2} sx={{ width: '100%', mb: 2 }}>
+                    <Grid item xs={12} md={6} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'stretch' }}>
+                      <TextField
+                        fullWidth
+                        label="Resultado Esperado"
+                        multiline
+                        minRows={5}
+                        value={testCase.expectedResult}
+                        onChange={(e) => handleTestCaseChange(testCase.id, 'expectedResult', e.target.value)}
+                        placeholder="Descreva o resultado esperado"
+                        sx={{ backgroundColor: '#ffffff', minWidth: 564, borderRadius: 2, boxShadow: '0 1px 4px #eee', mb: 2 }}
+                        // sx={{ backgroundColor: '#f8fafc', borderRadius: 2, boxShadow: '0 1px 4px #eee', flex: 1 }}
+                        error={showFieldErrors && !testCase.expectedResult}
+                        helperText={showFieldErrors && !testCase.expectedResult ? 'Campo obrigatório' : ''}
+                        inputRef={el => refs.current[idx].expectedResult = el}
+                        required
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'stretch' }}>
+                      <TextField
+                        fullWidth
+                        label="Resultado Obtido"
+                        multiline
+                        minRows={5}
+                        value={testCase.actualResult}
+                        onChange={(e) => handleTestCaseChange(testCase.id, 'actualResult', e.target.value)}
+                        placeholder="Descreva o resultado obtido"
+                        sx={{ backgroundColor: '#ffffff', minWidth: 564, borderRadius: 2, boxShadow: '0 1px 4px #eee', mb: 2 }}
+                        // sx={{ backgroundColor: '#f8fafc', borderRadius: 2, boxShadow: '0 1px 4px #eee', flex: 1 }}
+                        error={showFieldErrors && !testCase.actualResult}
+                        helperText={showFieldErrors && !testCase.actualResult ? 'Campo obrigatório' : ''}
+                        inputRef={el => refs.current[idx].actualResult = el}
+                        required
+                      />
+                    </Grid>
+                  </Grid>
                   <FormControl fullWidth>
                     <InputLabel>Status</InputLabel>
                     <Select
