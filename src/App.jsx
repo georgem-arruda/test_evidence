@@ -92,12 +92,40 @@ function SummaryTab({ testCases, summaryNotes, setSummaryNotes }) {
       <Typography variant="h4" gutterBottom sx={{ fontWeight: 700 }}>
         Resumo Geral
       </Typography>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ background: '#f7f9fb', borderRadius: 2, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant="subtitle1">Total de Casos de Teste:</Typography>
+          <Typography variant="subtitle1">{total}</Typography>
+        </Box>
+        <Box sx={{ background: '#f7f9fb', borderRadius: 2, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant="subtitle1">Casos Aprovados:</Typography>
+          <Typography variant="subtitle1" sx={{ color: '#43a047' }}>{approved}</Typography>
+        </Box>
+        <Box sx={{ background: '#f7f9fb', borderRadius: 2, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant="subtitle1">Casos Reprovados:</Typography>
+          <Typography variant="subtitle1" sx={{ color: '#e53935' }}>{rejected}</Typography>
+        </Box>
+        <Box sx={{ background: '#f7f9fb', borderRadius: 2, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant="subtitle1">Casos Bloqueados:</Typography>
+          <Typography variant="subtitle1" sx={{ color: '#1976d2' }}>{blocked}</Typography>
+        </Box>
+        <Box sx={{ background: '#f7f9fb', borderRadius: 2, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant="subtitle1">Casos Pendentes:</Typography>
+          <Typography variant="subtitle1" sx={{ color: '#fbc02d' }}>{pending}</Typography>
+        </Box>
+        <Box sx={{ background: '#f7f9fb', borderRadius: 2, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant="subtitle1">Cobertura dos Testes:</Typography>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{coverage}%</Typography>
+        </Box>
+      </Box>
       <Box sx={{ background: '#fff', borderRadius: 3, p: 3 }}>
         <Typography variant="h4" gutterBottom sx={{ fontWeight: 500 }}>
           Observações Finais e Recomendações
         </Typography>
             <TextField
               fullWidth
+              label="Observações e recomendações"
+              name="observation"
               multiline
               rows={3}
               value={summaryNotes}

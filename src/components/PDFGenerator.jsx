@@ -318,19 +318,6 @@ export const generatePDF = async (generalInfo, testCases, summary) => {
     yOffset += 8
   }
 
-  doc.setFont('helvetica', 'bold')
-  doc.setFontSize(14)
-  doc.text('Resumo Geral', margin, yOffset)
-  yOffset += 8
-  doc.setFont('helvetica', 'normal')
-  doc.setFontSize(10)
-  addLabeledTextInline('Total de Casos de Teste Executados:', String(summary.total))
-  addLabeledTextInline('Casos Aprovados:', String(summary.approved))
-  addLabeledTextInline('Casos Reprovados:', String(summary.rejected))
-  addLabeledTextInline('Casos Bloqueados:', String(summary.blocked))
-  addLabeledTextInline('Cobertura dos Testes:', `${summary.coverage}%`)
-  yOffset += 8
-
   if (summary?.summaryNotes?.trim()) {
     doc.setFont('helvetica', 'bold')
     doc.text('Observações Finais e Recomendações:', margin, yOffset)
