@@ -91,9 +91,7 @@ import {
           <Button
             variant="outlined"
             sx={{
-              border: '2px solid #e6007a',
-              color: '#e6007a',
-              background: '#fff',
+              border: '2px solid #1976d2',
               borderRadius: '24px',
               fontWeight: 'bold',
               fontSize: '1rem',
@@ -103,11 +101,11 @@ import {
               width: '100%',
               whiteSpace: 'nowrap',
               transition: 'background 0.2s, color 0.2s',
-              background: '#e6007a',
+              background: '#1976d2',
               color: '#fff',
               boxShadow: 'none',
               '&:hover': {
-                background: '#ad1457',
+                background: '#1565c0',
               },
             }}
             startIcon={<AddIcon />}

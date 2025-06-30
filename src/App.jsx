@@ -22,10 +22,10 @@ import { generatePDF } from './components/PDFGenerator'
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#e91e63',
+      main: '#1976d2',
     },
     secondary: {
-      main: '#dc004e',
+      main: '#1565c0',
     },
     background: {
       default: '#ffffff',
@@ -89,51 +89,20 @@ function SummaryTab({ testCases, summaryNotes, setSummaryNotes }) {
 
   return (
     <Box sx={{ background: '#fff', borderRadius: 3, mb: 3 }}>
-      <Typography variant="h4" gutterBottom sx={{ fontWeight: 700 }}>
-        Resumo Geral
+      <Typography variant="h6" gutterBottom>
+        Observações Finais e Recomendações
       </Typography>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <Box sx={{ background: '#f7f9fb', borderRadius: 2, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="subtitle1">Total de Casos de Teste:</Typography>
-          <Typography variant="subtitle1">{total}</Typography>
-        </Box>
-        <Box sx={{ background: '#f7f9fb', borderRadius: 2, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="subtitle1">Casos Aprovados:</Typography>
-          <Typography variant="subtitle1" sx={{ color: '#43a047' }}>{approved}</Typography>
-        </Box>
-        <Box sx={{ background: '#f7f9fb', borderRadius: 2, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="subtitle1">Casos Reprovados:</Typography>
-          <Typography variant="subtitle1" sx={{ color: '#e53935' }}>{rejected}</Typography>
-        </Box>
-        <Box sx={{ background: '#f7f9fb', borderRadius: 2, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="subtitle1">Casos Bloqueados:</Typography>
-          <Typography variant="subtitle1" sx={{ color: '#e91e63' }}>{blocked}</Typography>
-        </Box>
-        <Box sx={{ background: '#f7f9fb', borderRadius: 2, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="subtitle1">Casos Pendentes:</Typography>
-          <Typography variant="subtitle1" sx={{ color: '#fbc02d' }}>{pending}</Typography>
-        </Box>
-        <Box sx={{ background: '#f7f9fb', borderRadius: 2, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="subtitle1">Cobertura dos Testes:</Typography>
-          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{coverage}%</Typography>
-        </Box>
-      </Box>
-      <Box sx={{ background: '#fff', borderRadius: 3, p: 3 }}>
-        <Typography variant="h4" gutterBottom sx={{ fontWeight: 500 }}>
-          Observações Finais e Recomendações
-        </Typography>
-            <TextField
-              fullWidth
-              label="Observações e recomendações"
-              name="observation"
-              multiline
-              rows={3}
-              value={summaryNotes}
-              onChange={e => setSummaryNotes(e.target.value)}
-              placeholder="Insira observações e recomendações"
-              sx={{ backgroundColor: '#f7f9fb' }}
-            />
-      </Box>
+      <TextField
+        fullWidth
+        label="Observações e recomendações"
+        name="observation"
+        multiline
+        rows={3}
+        value={summaryNotes}
+        onChange={e => setSummaryNotes(e.target.value)}
+        placeholder="Insira observações e recomendações"
+        sx={{ backgroundColor: '#f7f9fb' }}
+      />
     </Box>
   );
 }
@@ -190,8 +159,15 @@ function App() {
   };
 
   const handleGeneratePDF = async () => {
+    console.log('Botão Gerar Relatório clicado!');
+    console.log('generalInfo:', generalInfo);
+    console.log('testCases:', testCases);
+    
     const emptyFields = getEmptyRequiredFields();
+    console.log('Campos vazios:', emptyFields);
+    
     if (emptyFields.length > 0) {
+      console.log('Há campos obrigatórios vazios, exibindo erros...');
       setErrorFields(emptyFields);
       setShowFieldErrors(true);
       // Foco no primeiro campo obrigatório vazio
@@ -229,17 +205,25 @@ function App() {
       }
       return;
     }
+    
+    console.log('Todos os campos obrigatórios preenchidos, gerando PDF...');
     setErrorFields([]);
     setShowFieldErrors(false);
-    await generatePDF(generalInfo, testCases, {
-      total: testCases.length,
-      approved: testCases.filter(tc => tc.status === 'Aprovado').length,
-      rejected: testCases.filter(tc => tc.status === 'Reprovado').length,
-      blocked: testCases.filter(tc => tc.status === 'Bloqueado').length,
-      pending: testCases.filter(tc => tc.status === 'Selecione o status').length,
-      coverage: testCases.length > 0 ? ((testCases.filter(tc => tc.status === 'Aprovado').length / testCases.length) * 100).toFixed(1) : '0.0',
-      summaryNotes
-    });
+    
+    try {
+      await generatePDF(generalInfo, testCases, {
+        total: testCases.length,
+        approved: testCases.filter(tc => tc.status === 'Aprovado').length,
+        rejected: testCases.filter(tc => tc.status === 'Reprovado').length,
+        blocked: testCases.filter(tc => tc.status === 'Bloqueado').length,
+        pending: testCases.filter(tc => tc.status === 'Selecione o status').length,
+        coverage: testCases.length > 0 ? ((testCases.filter(tc => tc.status === 'Aprovado').length / testCases.length) * 100).toFixed(1) : '0.0',
+        summaryNotes
+      });
+      console.log('PDF gerado com sucesso!');
+    } catch (error) {
+      console.error('Erro ao gerar PDF:', error);
+    }
   };
 
   return (
@@ -259,34 +243,11 @@ function App() {
           flexDirection: 'column',
           p: { xs: 1, sm: 3, md: 5 },
         }}>
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 3, mt: 2, position: 'relative', width: '100%' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 1, mt: 2, width: '100%' }}>
             <Typography variant="h3" component="h1" sx={{ flex: 1, textAlign: 'center', fontWeight: 700 }}>
               Relatório de Evidências de Testes de Software
             </Typography>
-            <Button
-              variant="contained"
-              sx={{
-                position: 'absolute',
-                right: { xs: 8, sm: 24, md: 40 },
-                top: 0,
-                borderRadius: '24px',
-                fontWeight: 'bold',
-                fontSize: '1rem',
-                px: 4,
-                py: 1.5,
-                background: '#e6007a',
-                color: '#fff',
-                boxShadow: 'none',
-                '&:hover': {
-                  background: '#ad1457',
-                },
-              }}
-              onClick={handleGeneratePDF}
-            >
-              Gerar Relatório
-            </Button>
           </Box>
-          
           <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', width: '100%' }}>
             <Paper elevation={0} sx={{
               backgroundColor: '#fff',
@@ -303,6 +264,27 @@ function App() {
               flex: 1,
               minHeight: 0,
             }}>
+              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+                <Button
+                  variant="contained"
+                  sx={{
+                    borderRadius: '24px',
+                    fontWeight: 'bold',
+                    fontSize: '1rem',
+                    px: 4,
+                    py: 1.5,
+                    background: '#1976d2',
+                    color: '#fff',
+                    boxShadow: 'none',
+                    '&:hover': {
+                      background: '#1565c0',
+                    },
+                  }}
+                  onClick={handleGeneratePDF}
+                >
+                  Gerar Relatório
+                </Button>
+              </Box>
               <Box sx={{ borderBottom: 1, borderColor: 'divider', borderRadius: 2, overflow: 'hidden' }}>
                 <Tabs
                   value={tabValue}
