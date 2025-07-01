@@ -14,10 +14,11 @@ import {
   } from '@mui/material'
   import DeleteIcon from '@mui/icons-material/Delete'
   import AddIcon from '@mui/icons-material/Add'
-  import { useState } from 'react'
+  import { useState, useRef } from 'react'
   
   function TestCases({ testCases, setTestCases, showFieldErrors, errorFields, refs }) {
     const [dragStates, setDragStates] = useState({})
+    const descriptionRefs = useRef([])
 
     const handleAddTestCase = () => {
       setTestCases(prev => {
@@ -35,6 +36,11 @@ import {
         // Reatribui os IDs sequencialmente
         return newCases.map((tc, idx) => ({ ...tc, id: idx + 1 }));
       });
+      setTimeout(() => {
+        if (descriptionRefs.current[testCases.length]) {
+          descriptionRefs.current[testCases.length].focus();
+        }
+      }, 0);
     }
   
     const handleDeleteTestCase = (id) => {
@@ -209,7 +215,7 @@ import {
                     helperText={showFieldErrors && !testCase.description ? (
                       <span style={{ color: '#616161' }}>Campo obrigatório: descreva o caso de teste.</span>
                     ) : ''}
-                    inputRef={el => refs.current[idx].description = el}
+                    inputRef={el => { refs.current[idx].description = el; descriptionRefs.current[idx] = el; }}
                     required
                   />
                   <Grid container spacing={2} sx={{ width: '100%', mb: 2 }}>

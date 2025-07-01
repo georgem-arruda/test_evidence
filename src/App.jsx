@@ -232,6 +232,7 @@ function App() {
       <Box sx={{ minHeight: '100vh', minWidth: '100vw', width: '100vw', height: '100vh', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', background: 'none', p: 0, m: 0 }}>
         <Paper elevation={0} sx={{
           width: '100vw',
+          maxWidth: '100vw',
           height: '100vh',
           minHeight: '100vh',
           minWidth: '100vw',
