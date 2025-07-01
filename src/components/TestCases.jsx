@@ -14,8 +14,11 @@ import {
   } from '@mui/material'
   import DeleteIcon from '@mui/icons-material/Delete'
   import AddIcon from '@mui/icons-material/Add'
+  import { useState } from 'react'
   
   function TestCases({ testCases, setTestCases, showFieldErrors, errorFields, refs }) {
+    const [dragStates, setDragStates] = useState({})
+
     const handleAddTestCase = () => {
       setTestCases(prev => {
         const newCases = [
@@ -52,14 +55,16 @@ import {
     }
   
     const handleEvidenceUpload = (id, event) => {
-      const files = Array.from(event.target.files)
-      setTestCases(prev =>
-        prev.map(testCase =>
-          testCase.id === id
-            ? { ...testCase, evidences: [...(testCase.evidences || []), ...files] }
-            : testCase
+      const files = Array.from(event.target.files || event.dataTransfer?.files || [])
+      if (files.length > 0) {
+        setTestCases(prev =>
+          prev.map(testCase =>
+            testCase.id === id
+              ? { ...testCase, evidences: [...(testCase.evidences || []), ...files] }
+              : testCase
+          )
         )
-      )
+      }
     }
   
     const handleRemoveEvidence = (id, index) => {
@@ -71,7 +76,48 @@ import {
         )
       )
     }
-  
+
+    const handleDragOver = (e, testCaseId) => {
+      e.preventDefault()
+      e.stopPropagation()
+      setDragStates(prev => ({ ...prev, [testCaseId]: true }))
+    }
+
+    const handleDragEnter = (e, testCaseId) => {
+      e.preventDefault()
+      e.stopPropagation()
+      setDragStates(prev => ({ ...prev, [testCaseId]: true }))
+    }
+
+    const handleDragLeave = (e, testCaseId) => {
+      e.preventDefault()
+      e.stopPropagation()
+      if (!e.currentTarget.contains(e.relatedTarget)) {
+        setDragStates(prev => ({ ...prev, [testCaseId]: false }))
+      }
+    }
+
+    const handleDrop = (e, testCaseId) => {
+      e.preventDefault()
+      e.stopPropagation()
+      setDragStates(prev => ({ ...prev, [testCaseId]: false }))
+      
+      const files = Array.from(e.dataTransfer.files)
+      if (files.length > 0) {
+        // Filtrar apenas imagens
+        const imageFiles = files.filter(file => file.type.startsWith('image/'))
+        if (imageFiles.length > 0) {
+          setTestCases(prev =>
+            prev.map(testCase =>
+              testCase.id === testCaseId
+                ? { ...testCase, evidences: [...(testCase.evidences || []), ...imageFiles] }
+                : testCase
+            )
+          )
+        }
+      }
+    }
+
     return (
       <Paper
         elevation={3}
@@ -87,17 +133,17 @@ import {
           overflow: 'hidden'
         }}
       >
-        <Box sx={{ mt: 2 }}>
+        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
           <Button
             variant="outlined"
             sx={{
               border: '2px solid #1976d2',
               borderRadius: '24px',
               fontWeight: 'bold',
-              fontSize: '1rem',
-              padding: '18px 0',
-              maxWidth: '320px',
-              minWidth: '260px',
+              fontSize: '0.9rem',
+              padding: '12px 0',
+              maxWidth: '280px',
+              minWidth: '220px',
               width: '100%',
               whiteSpace: 'nowrap',
               transition: 'background 0.2s, color 0.2s',
@@ -124,6 +170,8 @@ import {
           {testCases.map((testCase, idx) => {
             // Inicializa refs para cada campo obrigatório do caso de teste
             if (!refs.current[idx]) refs.current[idx] = {};
+            const isDragOver = dragStates[testCase.id] || false;
+            
             return (
               <Card
                 key={testCase.id}
@@ -138,11 +186,29 @@ import {
                   <TextField
                     fullWidth
                     label="Descrição"
+                    aria-label="Descrição"
                     value={testCase.description}
                     onChange={(e) => handleTestCaseChange(testCase.id, 'description', e.target.value)}
-                    sx={{ backgroundColor: '#f8fafc', borderRadius: 2, boxShadow: '0 1px 4px #eee', mb: 2 }}
-                    error={showFieldErrors && !testCase.description}
-                    helperText={showFieldErrors && !testCase.description ? 'Campo obrigatório' : ''}
+                    placeholder="Descreva o caso de teste..."
+                    sx={{
+                      backgroundColor: showFieldErrors && !testCase.description ? '#c0c0c0' : '#ffffff',
+                      borderRadius: 2,
+                      boxShadow: '0 1px 4px #eee',
+                      mb: 2,
+                      '& .MuiOutlinedInput-notchedOutline': {
+                        borderColor: '#e0e0e0',
+                      },
+                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: '#757575',
+                      },
+                      '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: '#757575',
+                      },
+                    }}
+                    error={false}
+                    helperText={showFieldErrors && !testCase.description ? (
+                      <span style={{ color: '#616161' }}>Campo obrigatório: descreva o caso de teste.</span>
+                    ) : ''}
                     inputRef={el => refs.current[idx].description = el}
                     required
                   />
@@ -151,15 +217,32 @@ import {
                       <TextField
                         fullWidth
                         label="Resultado Esperado"
+                        aria-label="Resultado Esperado"
                         multiline
                         minRows={5}
                         value={testCase.expectedResult}
                         onChange={(e) => handleTestCaseChange(testCase.id, 'expectedResult', e.target.value)}
-                        placeholder="Descreva o resultado esperado"
-                        sx={{ backgroundColor: '#ffffff', minWidth: 564, borderRadius: 2, boxShadow: '0 1px 4px #eee', mb: 2 }}
-                        // sx={{ backgroundColor: '#f8fafc', borderRadius: 2, boxShadow: '0 1px 4px #eee', flex: 1 }}
-                        error={showFieldErrors && !testCase.expectedResult}
-                        helperText={showFieldErrors && !testCase.expectedResult ? 'Campo obrigatório' : ''}
+                        placeholder="O que deveria acontecer..."
+                        sx={{
+                          backgroundColor: showFieldErrors && !testCase.expectedResult ? '#c0c0c0' : '#ffffff',
+                          borderRadius: 2,
+                          boxShadow: '0 1px 4px #eee',
+                          width: 563,
+                          mb: 2,
+                          '& .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#e0e0e0',
+                          },
+                          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#757575',
+                          },
+                          '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#757575',
+                          },
+                        }}
+                        error={false}
+                        helperText={showFieldErrors && !testCase.expectedResult ? (
+                          <span style={{ color: '#616161' }}>Campo obrigatório: descreva o que deveria acontecer.</span>
+                        ) : ''}
                         inputRef={el => refs.current[idx].expectedResult = el}
                         required
                       />
@@ -168,15 +251,32 @@ import {
                       <TextField
                         fullWidth
                         label="Resultado Obtido"
+                        aria-label="Resultado Obtido"
                         multiline
                         minRows={5}
                         value={testCase.actualResult}
                         onChange={(e) => handleTestCaseChange(testCase.id, 'actualResult', e.target.value)}
-                        placeholder="Descreva o resultado obtido"
-                        sx={{ backgroundColor: '#ffffff', minWidth: 564, borderRadius: 2, boxShadow: '0 1px 4px #eee', mb: 2 }}
-                        // sx={{ backgroundColor: '#f8fafc', borderRadius: 2, boxShadow: '0 1px 4px #eee', flex: 1 }}
-                        error={showFieldErrors && !testCase.actualResult}
-                        helperText={showFieldErrors && !testCase.actualResult ? 'Campo obrigatório' : ''}
+                        placeholder="O que ocorreu durante o teste..."
+                        sx={{
+                          backgroundColor: showFieldErrors && !testCase.actualResult ? '#c0c0c0' : '#ffffff',
+                          borderRadius: 2,
+                          width: 563,
+                          boxShadow: '0 1px 4px #eee',
+                          mb: 2,
+                          '& .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#e0e0e0',
+                          },
+                          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#757575',
+                          },
+                          '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#757575',
+                          },
+                        }}
+                        error={false}
+                        helperText={showFieldErrors && !testCase.actualResult ? (
+                          <span style={{ color: '#616161' }}>Campo obrigatório: descreva o que ocorreu durante o teste.</span>
+                        ) : ''}
                         inputRef={el => refs.current[idx].actualResult = el}
                         required
                       />
@@ -203,7 +303,7 @@ import {
                     </Typography>
                     <Box
                       sx={{
-                        border: '2px dashed #cfd8dc',
+                        border: `2px dashed ${isDragOver ? '#1976d2' : '#cfd8dc'}`,
                         borderRadius: 2,
                         p: 3,
                         minHeight: 120,
@@ -211,11 +311,20 @@ import {
                         flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        backgroundColor: '#fff',
+                        backgroundColor: isDragOver ? '#e3f2fd' : '#fff',
                         cursor: 'pointer',
-                        mb: 2
+                        mb: 2,
+                        transition: 'all 0.2s ease',
+                        '&:hover': {
+                          borderColor: '#1976d2',
+                          backgroundColor: '#f5f5f5',
+                        }
                       }}
                       component="label"
+                      onDragOver={(e) => handleDragOver(e, testCase.id)}
+                      onDragEnter={(e) => handleDragEnter(e, testCase.id)}
+                      onDragLeave={(e) => handleDragLeave(e, testCase.id)}
+                      onDrop={(e) => handleDrop(e, testCase.id)}
                     >
                       <input
                         type="file"
@@ -226,11 +335,11 @@ import {
                       />
                       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <svg width="40" height="40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M20 8v16m0 0l-6-6m6 6l6-6" stroke="#90a4ae" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                          <rect x="4" y="4" width="32" height="32" rx="16" stroke="#90a4ae" strokeWidth="2"/>
+                          <path d="M20 8v16m0 0l-6-6m6 6l6-6" stroke={isDragOver ? "#1976d2" : "#90a4ae"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          <rect x="4" y="4" width="32" height="32" rx="16" stroke={isDragOver ? "#1976d2" : "#90a4ae"} strokeWidth="2"/>
                         </svg>
-                        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                          Arraste e solte imagens ou clique para fazer upload
+                        <Typography variant="body2" color="text.secondary" sx={{ mt: 1, textAlign: 'center' }}>
+                          {isDragOver ? 'Solte as imagens aqui!' : 'Arraste e solte imagens ou clique para fazer upload'}
                         </Typography>
                       </Box>
                     </Box>
